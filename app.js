@@ -1,3 +1,4 @@
+// DOM elements
 const regionSelect = document.querySelector('#region');
 const errorsSlider = document.querySelector('#errorsSlider');
 const errorsInput = document.querySelector('#errorsInput');
@@ -12,35 +13,50 @@ errorsInput.addEventListener('input', () => {
     errorsSlider.value = errorsInput.value;
 });
 
+// Generate random seed value
 randomSeedBtn.addEventListener('click', () => {
     const randomSeed = Math.floor(Math.random() * 100000);
     seedInput.value = randomSeed;
+    resetTable();
     generateData();
 });
 
-regionSelect.addEventListener('change', generateData);
-errorsSlider.addEventListener('input', generateData);
-seedInput.addEventListener('input', generateData);
+regionSelect.addEventListener('change', () => {
+    resetTable();
+    generateData();
+});
+errorsSlider.addEventListener('input', () => {
+    resetTable();
+    generateData();
+});
+seedInput.addEventListener('input', () => {
+    resetTable();
+    generateData();
+});
 
 const tableContainer = document.querySelector('.table-container');
 let totalRecords = 20;
+let loading = false;
+
 tableContainer.addEventListener('scroll', () => {
-    if (tableContainer.scrollTop + tableContainer.clientHeight >= tableContainer.scrollHeight) {
+    if (tableContainer.scrollTop + tableContainer.clientHeight >= tableContainer.scrollHeight && !loading) {
+        loading = true; // Prevents multiple triggers during loading
         totalRecords += 10;
         generateData();
     }
 });
 
+// Main function to generate fake data
 function generateData() {
     const region = regionSelect.value;
     const errorProbability = parseFloat(errorsSlider.value);
     const seed = seedInput.value ? parseInt(seedInput.value) : Math.random();
 
-    faker.seed(seed);
+    faker.seed(seed); 
 
-    userTableBody.innerHTML = ''; 
+    const currentRows = userTableBody.querySelectorAll('tr').length;
 
-    for (let i = 1; i <= totalRecords; i++) {
+    for (let i = currentRows + 1; i <= totalRecords; i++) {
         const hasError = Math.random() < errorProbability;
 
         const row = document.createElement('tr');
@@ -49,7 +65,7 @@ function generateData() {
         const address = generateAddress(region);
         const phone = generatePhone(region);
 
-       
+        // Add random errors if needed
         const errorFields = ['name', 'address', 'phone'];
         if (hasError) {
             const fieldToCorrupt = faker.random.arrayElement(errorFields);
@@ -67,8 +83,15 @@ function generateData() {
         `;
         userTableBody.appendChild(row);
     }
+
 }
 
+function resetTable() {
+    userTableBody.innerHTML = '';
+    totalRecords = 20;
+}
+
+// Generate realistic name based on region
 function generateName(region) {
     let firstName, lastName, middleName;
     if (region === 'poland') {
@@ -86,7 +109,6 @@ function generateName(region) {
     }
     return { fullName: `${firstName} ${middleName} ${lastName}` };
 }
-
 
 function generateAddress(region) {
     let fullAddress;
