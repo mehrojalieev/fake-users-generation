@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake User Data Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-container">
+    <label for="region">Select Region:</label>
+    <select id="region">
+        <option value="poland">Poland</option>
+        <option value="usa">USA</option>
+        <option value="georgia">Georgia</option>
+    </select>
+
+    <label for="errorsSlider">Errors per record:</label>
+    <input type="range" id="errorsSlider" min="0" max="10" step="0.1">
+    <input type="number" id="errorsInput" min="0" max="1000">
+
+    <label for="seed">Seed value:</label>
+    <input type="text" id="seed" placeholder="Enter Seed" />
+    <button id="randomSeed">Generate Random Seed</button>
+</div>
+
+<div class="table-container">
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Identifier</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+<script src="./app.js"></script>
+
+</body>
+</html>
