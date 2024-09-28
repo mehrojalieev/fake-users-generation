@@ -18,7 +18,6 @@ randomSeedBtn.addEventListener('click', () => {
     generateData();
 });
 
-// Generate data when user changes any input
 regionSelect.addEventListener('change', generateData);
 errorsSlider.addEventListener('input', generateData);
 seedInput.addEventListener('input', generateData);
